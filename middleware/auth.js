@@ -2,47 +2,47 @@ const jwt = require('jsonwebtoken');
 const user = require('../model/dbcon/user');
 const secrete = "shareboard";
 
-exports.authrize = (req,res,next)=>{
+exports.authrize = (req, res, next) => {
     const userId = req.body.userId;
     let extime = Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60)
     jwt.sign({
-        sub:userId,
+        sub: userId,
         iat: Math.floor(Date.now() / 1000),
-        exp:extime
-    }, secrete, (err, token)=>{
-        if(err){
+        exp: extime
+    }, secrete, (err, token) => {
+        if (err) {
             res.status(500).json({
-                message:'server can`t make token'
+                message: 'server can`t make token'
             })
-        }else{
+        } else {
             res.json({
-                result:1,
+                result: 1,
                 token,
-                userId:userId
+                userId: userId
             })
         }
     })
 }
 
-exports.authmiddleware = (req,res,next)=>{
+exports.authmiddleware = (req, res, next) => {
     const token = req.headers.authorization;
-    if(!token){
+    if (!token) {
         console.log('no token');
         res.json({
-            result:0
+            result: 0
         })
     }
 
-    try{
+    try {
         const decodedToken = jwt.verify(token, secrete);
         const userId = decodedToken.sub;
         console.log('auto login', userId);
         req.body.userId = userId;
         next();
-    } catch(err){
+    } catch (err) {
         console.log(err);
         res.status(500).json({
-            result:0
+            result: 0
         })
     }
 }
