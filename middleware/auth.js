@@ -25,7 +25,6 @@ exports.authrize = (req, res, next) => {
 }
 
 exports.authmiddleware = (req, res, next) => {
-    console.log(req.headers);
     const token = req.headers['authorization'];
 
 

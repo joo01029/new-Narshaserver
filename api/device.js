@@ -2,7 +2,6 @@ const model = require('../model/dbcon');
 const tokenI = require('../middleware/auth');
 
 exports.deviceInsert = async (req, res, next) => {
-    console.log(req.body);
     const { userId, deviceName, deviceId, typeId } = req.body;
 
     try {
@@ -38,5 +37,31 @@ exports.deviceInsert = async (req, res, next) => {
         return res.status(500).json({
             message: '서버 오류',
         });
+    }
+}
+
+exports.deviceSelect = async (req, res, next) => {
+    const { userId } = req.body;
+    try {
+        const device = await model.Device.findAll({
+            include: [
+                {
+                    model: model.DeviceType,
+                    required: true,
+                    attributes: ['typeId']
+                }
+            ],
+            where: { userId: userId }
+        });
+        res.json({
+            device
+        })
+    } catch (err) {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                massage: 'database error'
+            })
+        }
     }
 }

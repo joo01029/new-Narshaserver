@@ -1,3 +1,5 @@
+const { post } = require("../router");
+
 module.exports = (sequelize, DataTypes) => {
     const device = sequelize.define('device', {
         deviceId: {
@@ -34,6 +36,16 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         tableName: 'device',
         timestamps: false
-    })
+    });
+
+    device.associate = (model) => {
+        device.belongsTo(model.user, {
+            foreigKey: 'userId'
+        })
+        device.belongsTo(model.deviceType, {
+            foreigKey: 'typeId'
+        })
+    }
+
     return device;
 }
