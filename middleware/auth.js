@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const user = require('../model/dbcon/user');
+const user = require('../model/user');
 const secrete = "shareboard";
 
 exports.authrize = (req, res, next) => {
@@ -25,7 +25,10 @@ exports.authrize = (req, res, next) => {
 }
 
 exports.authmiddleware = (req, res, next) => {
-    const token = req.headers.authorization;
+    console.log(req.headers);
+    const token = req.headers['authorization'];
+
+
     if (!token) {
         console.log('no token');
         res.json({
