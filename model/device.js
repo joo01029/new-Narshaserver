@@ -38,14 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
     });
 
-    device.associate = (model) => {
-        device.belongsTo(model.user, {
-            foreigKey: 'userId'
-        })
-        device.belongsTo(model.deviceType, {
-            foreigKey: 'typeId'
-        })
-    }
+    
 
     return device;
 }

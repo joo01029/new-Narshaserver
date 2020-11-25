@@ -46,7 +46,7 @@ exports.deviceSelect = async (req, res, next) => {
         const device = await model.Device.findAll({
             include: [
                 {
-                    model: model.DeviceType,
+                    model: model.deviceType,
                     required: true,
                     attributes: ['typeId']
                 }
